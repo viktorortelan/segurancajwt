@@ -11,15 +11,18 @@ export async function inserirDiairo(diarioOBJ) {
     return fim.insertId;
 }
 
-export async function mostrarDiario() {
+export async function mostrarDiario(id) {
     let comando = `
-        SELECT u.nm_usuario, 
-		d.ds_conteudo
-        FROM tb_usuario u
-        INNER JOIN tb_diario d ON u.id_usuario = d.id_usuario;
+       SELECT u.nm_usuario, 
+       d.ds_conteudo
+       FROM tb_usuario u
+       INNER JOIN tb_diario d ON u.id_usuario = d.id_usuario
+       WHERE u.id_usuario = ?;
+
     `;
 
-    let registro = await con.query(comando);
-    let fim = registro[0];
-    return fim[0];
+    let registro = await con.query(comando, [id]);
+    
+    return registro[0];
 }
+
